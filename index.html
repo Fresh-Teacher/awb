@@ -2495,7 +2495,7 @@ select:focus {
                     <div class="registration-details">
                         <div class="detail-item">
                             <div class="registrant-name">${registration["Full Name"]}</div>
-                            <div class="timestamp">Registered: ${registration["Timestamp"].split(' ')[0]}</div>
+                            <div class="timestamp">Registered on ${registration["Timestamp"].split(' ')[0]}</div>
                         </div>
                         <div class="detail-item">
                             <span class="label">Email:</span><br>
@@ -2516,13 +2516,13 @@ select:focus {
         }
 
         function showRegistrationDetail(registration) {
-            const modal = document.getElementById('registrationModal');
-            const modalContent = document.getElementById('modalContent');
+    const modal = document.getElementById('registrationModal');
+    const modalContent = document.getElementById('modalContent');
 
-            const detailHTML = `
-                <h2>${registration["Full Name"]}</h2>
-                <div class="timestamp">${registration["Timestamp"]}</div>
-                <div class="registration-details">
+    const detailHTML = `
+        <h2>${registration["Full Name"]}</h2>
+        <div class="timestamp">${registration["Timestamp"]}</div>
+        <div class="registration-details">
                     <div class="detail-item">
                         <span class="label">Email:</span><br>
                         ${createContactLink('email', registration["Email Address"], 'fas fa-envelope')}
@@ -2545,8 +2545,8 @@ select:focus {
                         <span class="label">Institution Level:</span> ${registration["Level of Institution"]}
                     </div>
                     <div class="detail-item">
-                        <span class="label">Role:</span> ${registration["Role at School"]}
-                    </div>
+                <span class="label">Role:</span> ${registration["Role at School "]}  <!-- Note the space after "School" -->
+            </div>
                     <div class="detail-item">
                         <span class="label">Device for Study:</span> ${registration["Which device will you use for study during the course?"]}
                     </div>
@@ -2644,40 +2644,40 @@ select:focus {
         }
 
         function filterRegistrations() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const mainFilter = document.getElementById('mainFilter').value;
-            
-            filteredRegistrations = registrationData["Form Responses 1"].filter(registration => {
-                // Search by name or email
-                const searchMatch = 
-                    registration["Full Name"].toLowerCase().includes(searchTerm) ||
-                    registration["Email Address"].toLowerCase().includes(searchTerm);
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const mainFilter = document.getElementById('mainFilter').value;
+    
+    filteredRegistrations = registrationData["Form Responses 1"].filter(registration => {
+        // Search by name or email
+        const searchMatch = 
+            registration["Full Name"].toLowerCase().includes(searchTerm) ||
+            registration["Email Address"].toLowerCase().includes(searchTerm);
 
-                // Apply filters if selected
-                let filterMatch = true;
-                if (mainFilter) {
-                    const subFilterValue = document.getElementById(mainFilter + 'Filter').value;
-                    if (subFilterValue) {
-                        switch (mainFilter) {
-                            case 'role':
-                                filterMatch = registration["Role at School"] === subFilterValue;
-                                break;
-                            case 'district':
-                                filterMatch = registration["District of Residence"] === subFilterValue;
-                                break;
-                            case 'institution':
-                                filterMatch = registration["Level of Institution"] === subFilterValue;
-                                break;
-                        }
-                    }
+        // Apply filters if selected
+        let filterMatch = true;
+        if (mainFilter) {
+            const subFilterValue = document.getElementById(mainFilter + 'Filter').value;
+            if (subFilterValue) {
+                switch (mainFilter) {
+                    case 'role':
+                        filterMatch = registration["Role at School "] === subFilterValue; // Note the space after "School"
+                        break;
+                    case 'district':
+                        filterMatch = registration["District of Residence"] === subFilterValue;
+                        break;
+                    case 'institution':
+                        filterMatch = registration["Level of Institution"] === subFilterValue;
+                        break;
                 }
-
-                return searchMatch && filterMatch;
-            });
-
-            currentPage = 1;
-            displayRegistrations(filteredRegistrations);
+            }
         }
+
+        return searchMatch && filterMatch;
+    });
+
+    currentPage = 1;
+    displayRegistrations(filteredRegistrations);
+}
 
         // Event listener for search
         document.getElementById('searchInput').addEventListener('input', filterRegistrations);
