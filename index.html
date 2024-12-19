@@ -25,17 +25,18 @@
           padding: 0;
           box-sizing: border-box;
       }
-      body {
-          font-family: Arial, sans-serif;
-          line-height: 1.6;
-          margin: 0;
-          padding: 20px;
-          background-color: #f5f5f5;
-      }
+  /* Create a subtle gradient background */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f7ff 0%, #fff1f6 100%);
+}
 
 /* Header styles */
 .header {
-    background: linear-gradient(135deg, #1e40af, #1e3a8a); /* Gradient blue header */
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
     color: white;
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -142,13 +143,13 @@
       }
 
       /* Container styles */
-.container {
+      .container {
     max-width: 1200px;
     margin: 0 auto;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 h1 {
@@ -208,24 +209,22 @@ select:focus {
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
+/* Update the registration cards to baby pink */
 .registration-card {
+    background-color: white;
     border: 1px solid #e5e7eb;
+    border-radius: 10px;
     padding: 20px;
     margin-bottom: 15px;
-    border-radius: 8px;
-    background-color: #fff;
     transition: all 0.3s ease;
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .registration-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-color: #3b82f6;
+    border-color: #2563eb;
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.1);
 }
-
 .registrant-name {
     font-size: 1.2em;
     font-weight: bold;
@@ -236,7 +235,7 @@ select:focus {
 }
 
 .registrant-name:hover {
-    color: #3b82f6;
+  color: #db2777;
     text-decoration: underline;
 }
 
@@ -251,9 +250,10 @@ select:focus {
       }
 
       .label {
-          font-weight: bold;
-          color: #666;
-      }
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.9em;
+}
 
       .contact-link {
           display: inline-flex;
@@ -324,7 +324,7 @@ select:focus {
 
 .modal-content {
     position: relative;
-    background-color: white;
+    background-color: white; /* Baby pink to match cards */
     margin: 50px auto;
     padding: 30px;
     width: 90%;
@@ -332,7 +332,7 @@ select:focus {
     border-radius: 12px;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
       .close-button {
@@ -345,10 +345,10 @@ select:focus {
       }
 
       .timestamp {
-          color: #666;
-          font-size: 0.9em;
-          margin-bottom: 10px;
-      }
+    color: #db2777;
+    font-size: 0.85em;
+    opacity: 0.8;
+}
 
 
 /* Pagination styling */
@@ -448,22 +448,25 @@ select:focus {
       }
 
 /* No results styling */
+/* No results styling */
 .no-results {
-    text-align: center;
-    padding: 40px 20px;
     background-color: white;
-    border-radius: 8px;
-    margin: 20px auto;
-    max-width: 500px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
 }
 
 .no-results i {
+    color: #2563eb;
     font-size: 48px;
     margin-bottom: 20px;
-    color: #3b82f6;
 }
-
+h3 {
+    color: #1e3a8a;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
 .no-results h3 {
     color: #1e40af;
     margin: 0 0 20px 0;
@@ -2495,7 +2498,6 @@ select:focus {
                     <div class="registration-details">
                         <div class="detail-item">
                             <div class="registrant-name">${registration["Full Name"]}</div>
-                            <div class="timestamp">Registered on ${registration["Timestamp"].split(' ')[0]}</div>
                         </div>
                         <div class="detail-item">
                             <span class="label">Email:</span><br>
@@ -2505,6 +2507,8 @@ select:focus {
                             <span class="label">Phone:</span><br>
                             ${createContactLink('phone', registration["Telephone contact"], 'fas fa-phone')}
                         </div>
+                        <div class="timestamp">Registered on ${registration["Timestamp"].split(' ')[0]}</div>
+
                     </div>
                 `;
 
