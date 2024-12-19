@@ -516,6 +516,26 @@ h3 {
           color: #343a40;
           margin-bottom: 10px;
       }
+      /* Add hover effects for scroll button */
+#scrollToTop {
+    transition: all 0.3s ease;
+}
+
+#scrollToTop:hover {
+    background-color: #1e3a8a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+#scrollToTop:active {
+    transform: translateY(0);
+}
+
+/* Ensure names are bold */
+.registrant-name {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
   </style>
 </head>
 <body>
@@ -611,36 +631,64 @@ h3 {
             return phone;
         }
 
-        // Create contact link HTML
-        function createContactLink(type, value, icon) {
-            if (!value) return '';
-            
-            let href = '';
-            let formattedValue = value;
-            
-            switch(type) {
-                case 'email':
-                    href = `mailto:${value}`;
-                    break;
-                case 'phone':
-                    formattedValue = formatPhoneNumber(value);
-                    href = `tel:${formattedValue}`;
-                    break;
-                case 'whatsapp':
-                    formattedValue = formatPhoneNumber(value);
-                    // Remove + for WhatsApp API
-                    href = `https://wa.me/${formattedValue.replace('+', '')}`;
-                    break;
-            }
-            
-            return `<a href="${href}" 
-                      class="contact-link" 
-                      onclick="event.stopPropagation()" 
-                      target="${type === 'email' ? '_self' : '_blank'}">
-                      <i class="${icon}"></i>
-                      ${formattedValue}
-                   </a>`;
-        }
+// Update the phone number formatting function to handle both display and functional formats
+function formatPhoneNumber(phone, forDisplay = false) {
+    if (!phone) return '';
+    
+    // Remove any non-digit characters
+    let cleanPhone = phone.replace(/\D/g, '');
+    
+    // If it already starts with 256, remove it for cleaning
+    if (cleanPhone.startsWith('256')) {
+        cleanPhone = cleanPhone.substring(3);
+    }
+    
+    // If it starts with 0, remove it
+    if (cleanPhone.startsWith('0')) {
+        cleanPhone = cleanPhone.substring(1);
+    }
+    
+    // For display, return the original format
+    if (forDisplay) {
+        return phone;
+    }
+    
+    // For functionality (calling/WhatsApp), add +256
+    return '+256' + cleanPhone;
+}
+
+// Update the contact link creation function
+function createContactLink(type, value, icon) {
+    if (!value) return '';
+    
+    let href = '';
+    let displayValue = value;
+    let functionalValue = value;
+    
+    switch(type) {
+        case 'email':
+            href = `mailto:${value}`;
+            break;
+        case 'phone':
+            displayValue = formatPhoneNumber(value, true); // Original format for display
+            functionalValue = formatPhoneNumber(value, false); // Formatted for functionality
+            href = `tel:${functionalValue}`;
+            break;
+        case 'whatsapp':
+            displayValue = formatPhoneNumber(value, true); // Original format for display
+            functionalValue = formatPhoneNumber(value, false); // Formatted for functionality
+            href = `https://wa.me/${functionalValue.replace('+', '')}`;
+            break;
+    }
+    
+    return `<a href="${href}" 
+              class="contact-link" 
+              onclick="event.stopPropagation()" 
+              target="${type === 'email' ? '_self' : '_blank'}">
+              <i class="${icon}"></i>
+              ${displayValue}
+           </a>`;
+}
 
         const registrationData = {
   "Form Responses 1": [
@@ -2475,94 +2523,101 @@ h3 {
         });
 
 
-        function displayRegistrations(registrationsToShow) {
-            const registrationList = document.getElementById('registrationList');
-            registrationList.innerHTML = '';
+// Update the registration card display function
+function displayRegistrations(registrationsToShow) {
+    const registrationList = document.getElementById('registrationList');
+    registrationList.innerHTML = '';
 
-            if (registrationsToShow.length === 0) {
-                registrationList.innerHTML = displayNoResults();
-                document.getElementById('pagination').innerHTML = '';
-                return;
-            }
+    if (registrationsToShow.length === 0) {
+        registrationList.innerHTML = displayNoResults();
+        document.getElementById('pagination').innerHTML = '';
+        return;
+    }
 
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const paginatedRegistrations = registrationsToShow.slice(startIndex, endIndex);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedRegistrations = registrationsToShow.slice(startIndex, endIndex);
 
-            paginatedRegistrations.forEach(registration => {
-                const registrationCard = document.createElement('div');
-                registrationCard.className = 'registration-card';
-                registrationCard.onclick = () => showRegistrationDetail(registration);
+    paginatedRegistrations.forEach(registration => {
+        const registrationCard = document.createElement('div');
+        registrationCard.className = 'registration-card';
+        registrationCard.onclick = () => showRegistrationDetail(registration);
 
-                const registrationHTML = `
-                    <div class="registration-details">
-                        <div class="detail-item">
-                            <div class="registrant-name">${registration["Full Name"]}</div>
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">Email:</span><br>
-                            ${createContactLink('email', registration["Email Address"], 'fas fa-envelope')}
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">Phone:</span><br>
-                            ${createContactLink('phone', registration["Telephone contact"], 'fas fa-phone')}
-                        </div>
-                        <div class="timestamp">Registered on ${registration["Timestamp"].split(' ')[0]}</div>
+        const registrationHTML = `
+            <div class="registration-details">
+                <div class="detail-item">
+                    <div class="registrant-name">${registration["Full Name"].toUpperCase()}</div>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Email:</span><br>
+                    ${createContactLink('email', registration["Email Address"], 'fas fa-envelope')}
+                </div>
+                <div class="detail-item">
+                    <span class="label">Phone:</span><br>
+                    ${createContactLink('phone', registration["Telephone contact"], 'fas fa-phone')}
+                </div>
+                <div class="detail-item">
+                    <span class="label">WhatsApp:</span><br>
+                    ${createContactLink('whatsapp', registration["WhatsApp number"], 'fab fa-whatsapp')}
+                </div>
+                <div class="timestamp">Registered on ${registration["Timestamp"].split(' ')[0]}</div>
 
-                    </div>
-                `;
+            </div>
+        `;
 
-                registrationCard.innerHTML = registrationHTML;
-                registrationList.appendChild(registrationCard);
-            });
+        registrationCard.innerHTML = registrationHTML;
+        registrationList.appendChild(registrationCard);
+    });
 
-            updatePagination(registrationsToShow.length);
-        }
+    updatePagination(registrationsToShow.length);
+}
 
-        function showRegistrationDetail(registration) {
+// Update the modal display function to include all contact details
+function showRegistrationDetail(registration) {
     const modal = document.getElementById('registrationModal');
     const modalContent = document.getElementById('modalContent');
 
     const detailHTML = `
-        <h2>${registration["Full Name"]}</h2>
-        <div class="timestamp">${registration["Timestamp"]}</div>
+        <h2>${registration["Full Name"].toUpperCase()}</h2>
         <div class="registration-details">
-                    <div class="detail-item">
-                        <span class="label">Email:</span><br>
-                        ${createContactLink('email', registration["Email Address"], 'fas fa-envelope')}
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Phone:</span><br>
-                        ${createContactLink('phone', registration["Telephone contact"], 'fas fa-phone')}
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">WhatsApp:</span><br>
-                        ${createContactLink('whatsapp', registration["WhatsApp number"], 'fab fa-whatsapp')}
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">District:</span> ${registration["District of Residence"]}
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">School:</span> ${registration["School Name"]}
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Institution Level:</span> ${registration["Level of Institution"]}
-                    </div>
-                    <div class="detail-item">
-                <span class="label">Role:</span> ${registration["Role at School "]}  <!-- Note the space after "School" -->
+            <div class="detail-item">
+                <span class="label">Email:</span><br>
+                ${createContactLink('email', registration["Email Address"], 'fas fa-envelope')}
             </div>
-                    <div class="detail-item">
-                        <span class="label">Device for Study:</span> ${registration["Which device will you use for study during the course?"]}
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Can Attend Physical Classes:</span> ${registration["Can you attend physical classes if the training centre is around Kampala?"]}
-                    </div>
-                </div>
-            `;
+            <div class="detail-item">
+                <span class="label">Phone:</span><br>
+                ${createContactLink('phone', registration["Telephone contact"], 'fas fa-phone')}
+            </div>
+            <div class="detail-item">
+                <span class="label">WhatsApp:</span><br>
+                ${createContactLink('whatsapp', registration["WhatsApp number"], 'fab fa-whatsapp')}
+            </div>
+            <div class="detail-item">
+                <span class="label">District:</span> ${registration["District of Residence"]}
+            </div>
+            <div class="detail-item">
+                <span class="label">School:</span> ${registration["School Name"]}
+            </div>
+            <div class="detail-item">
+                <span class="label">Institution Level:</span> ${registration["Level of Institution"]}
+            </div>
+            <div class="detail-item">
+                <span class="label">Role:</span> ${registration["Role at School "]}
+            </div>
+            <div class="detail-item">
+                <span class="label">Device for Study:</span> ${registration["Which device will you use for study during the course?"]}
+            </div>
+            <div class="detail-item">
+                <span class="label">Can Attend Physical Classes:</span> ${registration["Can you attend physical classes if the training centre is around Kampala?"]}
+            </div>
+            <div class="timestamp">Registered on ${registration["Timestamp"].split(' ')[0]}</div>
 
-            modalContent.innerHTML = detailHTML;
-            modal.style.display = 'block';
-        }
+        </div>
+    `;
+
+    modalContent.innerHTML = detailHTML;
+    modal.style.display = 'block';
+}
 
         function updatePagination(totalItems) {
         const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -2602,17 +2657,64 @@ h3 {
         pagination.innerHTML = paginationHTML;
     }
 
-    function changePage(direction) {
-        const totalPages = Math.ceil(filteredRegistrations.length / itemsPerPage);
-        
-        if (direction === 'prev' && currentPage > 1) {
-            currentPage--;
-        } else if (direction === 'next' && currentPage < totalPages) {
-            currentPage++;
-        }
-        
-        displayRegistrations(filteredRegistrations);
+ // Add scroll to top functionality for pagination
+function changePage(direction) {
+    const totalPages = Math.ceil(filteredRegistrations.length / itemsPerPage);
+    
+    if (direction === 'prev' && currentPage > 1) {
+        currentPage--;
+    } else if (direction === 'next' && currentPage < totalPages) {
+        currentPage++;
     }
+    
+    displayRegistrations(filteredRegistrations);
+    // Scroll to top of the container
+    document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Add scroll to top button and its functionality
+document.body.insertAdjacentHTML('beforeend', `
+    <button id="scrollToTop" 
+            style="display: none; 
+                   position: fixed; 
+                   bottom: 20px; 
+                   right: 20px; 
+                   z-index: 99; 
+                   border: none; 
+                   outline: none; 
+                   background-color: #2563eb; 
+                   color: white; 
+                   cursor: pointer; 
+                   padding: 15px; 
+                   border-radius: 50%; 
+                   font-size: 18px; 
+                   width: 50px; 
+                   height: 50px; 
+                   display: flex; 
+                   align-items: center; 
+                   justify-content: center;
+                   box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+`);
+
+// Show/hide scroll button based on scroll position
+window.onscroll = function() {
+    const scrollButton = document.getElementById("scrollToTop");
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollButton.style.display = "flex";
+    } else {
+        scrollButton.style.display = "none";
+    }
+};
+
+// Scroll to top when button is clicked
+document.getElementById("scrollToTop").onclick = function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+};
 
     function handleJumpKeyPress(event, totalPages) {
         // Allow only numbers and enter key
@@ -2623,24 +2725,28 @@ h3 {
         return /[0-9]/.test(event.key);
     }
 
-    function jumpToPage(totalPages) {
-        const pageInput = document.getElementById('pageJump');
-        const errorElement = document.getElementById('pageError');
-        const newPage = parseInt(pageInput.value);
+// Update jumpToPage function to include scroll to top
+function jumpToPage(totalPages) {
+    const pageInput = document.getElementById('pageJump');
+    const errorElement = document.getElementById('pageError');
+    const newPage = parseInt(pageInput.value);
 
-        // Clear any existing error
-        errorElement.textContent = '';
+    // Clear any existing error
+    errorElement.textContent = '';
 
-        // Validate input
-        if (isNaN(newPage) || newPage < 1 || newPage > totalPages) {
-            errorElement.textContent = `Please enter a valid page number between 1 and ${totalPages}`;
-            pageInput.value = currentPage;
-            return;
-        }
-
-        currentPage = newPage;
-        displayRegistrations(filteredRegistrations);
+    // Validate input
+    if (isNaN(newPage) || newPage < 1 || newPage > totalPages) {
+        errorElement.textContent = `Please enter a valid page number between 1 and ${totalPages}`;
+        pageInput.value = currentPage;
+        return;
     }
+
+    currentPage = newPage;
+    displayRegistrations(filteredRegistrations);
+    // Scroll to top of the container
+    document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+}
+
 
         function closeModal() {
             const modal = document.getElementById('registrationModal');
