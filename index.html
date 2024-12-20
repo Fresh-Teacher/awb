@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- Previous head content remains the same -->
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWB - Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome to African Website Builder (AWB), your top choice for creating professional websites across Africa.">
+    <meta name="keyword"
+        content="African Website Builder, website creation, responsive design, business websites, personal websites, online presence, professional web solutions">
+    <meta name="author" content="AWB Team">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
+    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="African Website Builder" />
+    <meta property="og:image" content="https://awb-silk.vercel.app/logo.png" />
+</head><title>AWB - Login Portal</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         /* Previous styles remain the same */
@@ -208,6 +220,19 @@
                 font-size: 1.5rem;
             }
         }
+        .heart {
+    display: inline-block;
+    animation: beat 1s infinite;
+  }
+
+  @keyframes beat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
     </style>
 </head>
 <body>
@@ -225,7 +250,7 @@
     <main class="main-content">
         <div class="login-container">
             <div class="login-header">
-                <h1>Welcome Back</h1>
+                <h1>Login Portal</h1>
                 <p>Please login to access your account</p>
             </div>
             <form id="loginForm" onsubmit="return handleLogin(event)">
@@ -270,11 +295,12 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <p>&copy; <span id="currentYear"></span> AWB<br> All rights reserved.</p>
-        </div>
+            <p>&copy; <span id="currentYear"></span> AWB<br> All rights reserved</p>
+            <p>Coded with <span class="heart">❤️</span> by <strong><a href="https://fresh-teacher.github.io"> Fresh Teacher</a></strong></p>        </div>
     </footer>
 
     <script>
+
         // Update copyright year
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
