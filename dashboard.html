@@ -748,6 +748,29 @@ h3 {
     font-weight: 700;
     letter-spacing: 0.5px;
 }
+.heart {
+    display: inline-block;
+    animation: beat 1s infinite;
+  }
+
+  @keyframes beat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  .fresh-teacher {
+    color: #F4C2C2; /* Baby pink colour */
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .fresh-teacher:hover {
+    text-decoration: underline;
+  }
   </style>
 </head>
 <body>
@@ -816,7 +839,10 @@ h3 {
     <footer class="footer">
         <div class="footer-content">
             <p>&copy; <span id="currentYear"></span> AWB<br> All rights reserved.</p>
-        </div>
+            <p>
+              Coded with <span class="heart">❤️</span> by 
+              <a href="https://fresh-teacher.github.io" class="fresh-teacher" target="_blank">Fresh Teacher</a>
+            </p>        </div>
     </footer>
 
 
