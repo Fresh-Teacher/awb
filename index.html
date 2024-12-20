@@ -20,7 +20,7 @@
   <title>African Website Builders</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-     /* Progress bar styles */
+/* Progress bar styles */
 .progress-section {
     margin: 20px 0;
     padding: 20px;
@@ -57,15 +57,37 @@
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
     animation: progressFill 0.8s ease-out;
+    min-width: 40px; /* Ensures space for text at low percentages */
 }
 
 .progress-text {
-    color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #1e293b; /* Dark color for better visibility */
     font-weight: bold;
+    z-index: 2;
+    text-shadow: 
+        -1px -1px 0 #fff,  
+         1px -1px 0 #fff,
+        -1px  1px 0 #fff,
+         1px  1px 0 #fff; /* Text outline for visibility on any background */
+}
+
+/* Change text color to white when progress is over 20% */
+.progress-bar[style*="width: 2"] ~ .progress-text,
+.progress-bar[style*="width: 3"] ~ .progress-text,
+.progress-bar[style*="width: 4"] ~ .progress-text,
+.progress-bar[style*="width: 5"] ~ .progress-text,
+.progress-bar[style*="width: 6"] ~ .progress-text,
+.progress-bar[style*="width: 7"] ~ .progress-text,
+.progress-bar[style*="width: 8"] ~ .progress-text,
+.progress-bar[style*="width: 9"] ~ .progress-text,
+.progress-bar[style*="width: 100"] ~ .progress-text {
+    color: white;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    z-index: 1;
 }
 
 .course-units {
@@ -823,29 +845,35 @@ h3 {
         }
 
 // Update the phone number formatting function to handle both display and functional formats
+const phoneNumberCache = new Map();
+
 function formatPhoneNumber(phone, forDisplay = false) {
+    const cacheKey = `${phone}-${forDisplay}`;
+    if (phoneNumberCache.has(cacheKey)) {
+        return phoneNumberCache.get(cacheKey);
+    }
+
     if (!phone) return '';
     
-    // Remove any non-digit characters
-    let cleanPhone = phone.replace(/\D/g, '');
+    // Remove any non-digit characters once
+    const cleanPhone = phone.replace(/\D/g, '');
     
-    // If it already starts with 256, remove it for cleaning
-    if (cleanPhone.startsWith('256')) {
-        cleanPhone = cleanPhone.substring(3);
-    }
-    
-    // If it starts with 0, remove it
-    if (cleanPhone.startsWith('0')) {
-        cleanPhone = cleanPhone.substring(1);
-    }
-    
-    // For display, return the original format
+    let result;
     if (forDisplay) {
-        return phone;
+        result = phone;
+    } else {
+        // For functionality (calling/WhatsApp), add +256
+        result = '+256' + (cleanPhone.startsWith('256') ? 
+            cleanPhone.substring(3) : 
+            cleanPhone.startsWith('0') ? 
+                cleanPhone.substring(1) : 
+                cleanPhone);
     }
     
-    // For functionality (calling/WhatsApp), add +256
-    return '+256' + cleanPhone;
+    // Cache the result
+    phoneNumberCache.set(cacheKey, result);
+    
+    return result;
 }
 
 // Update the contact link creation function
@@ -880,6 +908,8 @@ function createContactLink(type, value, icon) {
               ${displayValue}
            </a>`;
 }
+
+
 
 const registrationData = 
 {
@@ -4316,6 +4346,47 @@ const registrationData =
     ]
 };
 
+// Cache DOM elements
+const DOM = {
+    registrationList: document.getElementById('registrationList'),
+    pagination: document.getElementById('pagination'),
+    modal: document.getElementById('registrationModal'),
+    modalContent: document.getElementById('modalContent')
+};
+
+// Create a document fragment for batch DOM updates
+const fragment = document.createDocumentFragment();
+
+// Registration card template
+const cardTemplate = document.createElement('template');
+cardTemplate.innerHTML = `
+    <div class="registration-card">
+        <div class="registration-details">
+            <div class="detail-item">
+                <div class="registrant-name"></div>
+            </div>
+            <div class="detail-item email-container">
+                <span class="label">Email:</span><br>
+            </div>
+            <div class="detail-item phone-container">
+                <span class="label">Phone:</span><br>
+            </div>
+            <div class="detail-item whatsapp-container">
+                <span class="label">WhatsApp:</span><br>
+            </div>
+        </div>
+    </div>
+`;
+
+const modalTemplate = document.createElement('template');
+modalTemplate.innerHTML = `
+    <h2></h2>
+    <div class="timestamp"></div>
+    <div class="progress-section"></div>
+    <div class="registration-details">
+        <!-- Pre-structured detail items -->
+    </div>
+`;
 
 const itemsPerPage = 5;
         let currentPage = 1;
@@ -4397,12 +4468,9 @@ const itemsPerPage = 5;
 
 // Update the registration card display function
 function displayRegistrations(registrationsToShow) {
-    const registrationList = document.getElementById('registrationList');
-    registrationList.innerHTML = '';
-
     if (registrationsToShow.length === 0) {
-        registrationList.innerHTML = displayNoResults();
-        document.getElementById('pagination').innerHTML = '';
+        DOM.registrationList.innerHTML = displayNoResults();
+        DOM.pagination.innerHTML = '';
         return;
     }
 
@@ -4410,44 +4478,50 @@ function displayRegistrations(registrationsToShow) {
     const endIndex = startIndex + itemsPerPage;
     const paginatedRegistrations = registrationsToShow.slice(startIndex, endIndex);
 
+    // Clear existing cards
+    while (DOM.registrationList.firstChild) {
+        DOM.registrationList.removeChild(DOM.registrationList.firstChild);
+    }
+
+    // Batch create cards
     paginatedRegistrations.forEach(registration => {
-        const registrationCard = document.createElement('div');
-        registrationCard.className = 'registration-card';
-        registrationCard.onclick = () => showRegistrationDetail(registration);
-
-        const registrationHTML = `
-            <div class="registration-details">
-                <div class="detail-item">
-                    <div class="registrant-name">${registration["Full Name"].toUpperCase()}</div>
-                </div>
-                <div class="detail-item">
-                    <span class="label">Email:</span><br>
-                    ${createContactLink('email', registration["Email Address"], 'fas fa-envelope')}
-                </div>
-                <div class="detail-item">
-                    <span class="label">Phone:</span><br>
-                    ${createContactLink('phone', registration["Telephone contact"], 'fas fa-phone')}
-                </div>
-                <div class="detail-item">
-                    <span class="label">WhatsApp:</span><br>
-                    ${createContactLink('whatsapp', registration["WhatsApp number"], 'fab fa-whatsapp')}
-                </div>
-
-            </div>
-        `;
-
-        registrationCard.innerHTML = registrationHTML;
-        registrationList.appendChild(registrationCard);
+        const card = cardTemplate.content.cloneNode(true).firstElementChild;
+        
+        // Update card content
+        card.querySelector('.registrant-name').textContent = registration["Full Name"].toUpperCase();
+        card.querySelector('.email-container').insertAdjacentHTML('beforeend', 
+            createContactLink('email', registration["Email Address"], 'fas fa-envelope'));
+        card.querySelector('.phone-container').insertAdjacentHTML('beforeend',
+            createContactLink('phone', registration["Telephone contact"], 'fas fa-phone'));
+        card.querySelector('.whatsapp-container').insertAdjacentHTML('beforeend',
+            createContactLink('whatsapp', registration["WhatsApp number"], 'fab fa-whatsapp'));
+        
+        card.onclick = () => showRegistrationDetail(registration);
+        fragment.appendChild(card);
     });
 
+    // Single DOM update
+    DOM.registrationList.appendChild(fragment);
     updatePagination(registrationsToShow.length);
 }
 
 // Function to calculate progress percentage
+const progressCache = new WeakMap();
+
 function calculateProgress(courseProgress) {
+    // Check cache first
+    if (progressCache.has(courseProgress)) {
+        return progressCache.get(courseProgress);
+    }
+
     const totalCourses = Object.keys(courseProgress).length;
-    const completedCourses = Object.values(courseProgress).filter(status => status === "completed").length;
-    return (completedCourses / totalCourses) * 100;
+    const completedCourses = Object.values(courseProgress)
+        .reduce((count, status) => status === "completed" ? count + 1 : count, 0);
+    
+    const progress = (completedCourses / totalCourses) * 100;
+    progressCache.set(courseProgress, progress);
+    
+    return progress;
 }
 
 // Function to create progress bar HTML
@@ -4479,90 +4553,105 @@ function createProgressBar(courseProgress) {
 }
 
 // Update the modal display function to include progress bar
+
 function showRegistrationDetail(registration) {
-    const modal = document.getElementById('registrationModal');
-    const modalContent = document.getElementById('modalContent');
-
-    const detailHTML = `
-        <h2>${registration["Full Name"].toUpperCase()}</h2> 
-        <div class="timestamp">Registered on ${registration["Timestamp"].split(' ')[0]} at ${new Date(registration["Timestamp"]).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}</div>       
-        ${createProgressBar(registration.courseProgress)}
-        
-        <div class="registration-details">
-            <div class="detail-item">
-                <span class="label">Email:</span><br>
-                ${createContactLink('email', registration["Email Address"], 'fas fa-envelope')}
-            </div>
-            <div class="detail-item">
-                <span class="label">Phone:</span><br>
-                ${createContactLink('phone', registration["Telephone contact"], 'fas fa-phone')}
-            </div>
-            <div class="detail-item">
-                <span class="label">WhatsApp:</span><br>
-                ${createContactLink('whatsapp', registration["WhatsApp number"], 'fab fa-whatsapp')}
-            </div>
-            <div class="detail-item">
-                <span class="label">District:</span> ${registration["District of Residence"]}
-            </div>
-            <div class="detail-item">
-                <span class="label">School:</span> ${registration["School Name"]}
-            </div>
-            <div class="detail-item">
-                <span class="label">Institution Level:</span> ${registration["Level of Institution"]}
-            </div>
-            <div class="detail-item">
-                <span class="label">Role:</span> ${registration["Role at School "]}
-            </div>
-            <div class="detail-item">
-                <span class="label">Device for Study:</span> ${registration["Which device will you use for study during the course?"]}
-            </div>
-            <div class="detail-item">
-                <span class="label">Can Attend Physical Classes:</span> ${registration["Can you attend physical classes if the training centre is around Kampala?"]}
-            </div>
-        </div>
-    `;
-
-    modalContent.innerHTML = detailHTML;
-    modal.style.display = 'block';
+    const content = modalTemplate.content.cloneNode(true);
+    
+    // Update only necessary parts
+    content.querySelector('h2').textContent = registration["Full Name"].toUpperCase();
+    content.querySelector('.timestamp').textContent = formatTimestamp(registration["Timestamp"]);
+    content.querySelector('.progress-section').innerHTML = createProgressBar(registration.courseProgress);
+    
+    // Update registration details
+    const detailsContainer = content.querySelector('.registration-details');
+    updateDetailsContainer(detailsContainer, registration);
+    
+    // Single DOM update
+    DOM.modalContent.innerHTML = '';
+    DOM.modalContent.appendChild(content);
+    DOM.modal.style.display = 'block';
 }
 
-        function updatePagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        const pagination = document.getElementById('pagination');
-        
-        const paginationHTML = `
-            <div class="pagination-container">
-                <div class="pagination">
-                    <button onclick="changePage('prev')" ${currentPage === 1 ? 'disabled' : ''}>
-                        <i class="fas fa-chevron-left"></i> Previous
-                    </button>
-                    
-                    <span class="page-info">
-                        Page ${currentPage} of ${totalPages}
-                    </span>
-                    
-                    <button onclick="changePage('next')" ${currentPage === totalPages ? 'disabled' : ''}>
-                        Next <i class="fas fa-chevron-right"></i>
-                    </button>
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    return `Registered on ${timestamp.split(' ')[0]} at ${date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        second: '2-digit', 
+        hour12: true 
+    })}`;
+}
 
-                    <div class="page-jump">
-                        <span>Jump to:</span>
-                        <input type="number" 
-                               id="pageJump" 
-                               min="1" 
-                               max="${totalPages}" 
-                               value="${currentPage}"
-                               onkeypress="return handleJumpKeyPress(event, ${totalPages})"
-                        >
-                        <button onclick="jumpToPage(${totalPages})">Go</button>
-                    </div>
-                </div>
-                <div class="error-message" id="pageError"></div>
-            </div>
+function updateDetailsContainer(container, registration) {
+    const details = [
+        { label: 'Email', value: createContactLink('email', registration["Email Address"], 'fas fa-envelope') },
+        { label: 'Phone', value: createContactLink('phone', registration["Telephone contact"], 'fas fa-phone') },
+        { label: 'WhatsApp', value: createContactLink('whatsapp', registration["WhatsApp number"], 'fab fa-whatsapp') },
+        { label: 'District', value: registration["District of Residence"] },
+        { label: 'School', value: registration["School Name"] },
+        { label: 'Institution Level', value: registration["Level of Institution"] },
+        { label: 'Role', value: registration["Role at School "] },
+        { label: 'Device for Study', value: registration["Which device will you use for study during the course?"] },
+        { label: 'Can Attend Physical Classes', value: registration["Can you attend physical classes if the training centre is around Kampala?"] }
+    ];
+
+    details.forEach(({ label, value }) => {
+        const detailItem = document.createElement('div');
+        detailItem.className = 'detail-item';
+        detailItem.innerHTML = `
+            <span class="label">${label}:</span><br>
+            ${value}
         `;
-        
-        pagination.innerHTML = paginationHTML;
+        container.appendChild(detailItem);
+    });
+}
+
+const paginationTemplate = document.createElement('template');
+let lastTotalPages = 0;
+
+function updatePagination(totalItems) {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    // Skip update if nothing changed
+    if (totalPages === lastTotalPages && currentPage <= totalPages) {
+        return;
     }
+    
+    lastTotalPages = totalPages;
+    
+    const paginationHTML = `
+        <div class="pagination-container">
+            <div class="pagination">
+                <button onclick="changePage('prev')" ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                
+                <span class="page-info">
+                    Page ${currentPage} of ${totalPages}
+                </span>
+                
+                <button onclick="changePage('next')" ${currentPage === totalPages ? 'disabled' : ''}>
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <div class="page-jump">
+                    <span>Jump to:</span>
+                    <input type="number" 
+                           id="pageJump" 
+                           min="1" 
+                           max="${totalPages}" 
+                           value="${currentPage}"
+                           onkeypress="return handleJumpKeyPress(event, ${totalPages})"
+                    >
+                    <button onclick="jumpToPage(${totalPages})">Go</button>
+                </div>
+            </div>
+            <div class="error-message" id="pageError"></div>
+        </div>
+    `;
+    
+    DOM.pagination.innerHTML = paginationHTML;
+}
 
  // Add scroll to top functionality for pagination
 function changePage(direction) {
@@ -4606,14 +4695,13 @@ document.body.insertAdjacentHTML('beforeend', `
 `);
 
 // Show/hide scroll button based on scroll position
-window.onscroll = function() {
+window.addEventListener('scroll', function() {
     const scrollButton = document.getElementById("scrollToTop");
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        scrollButton.style.display = "flex";
-    } else {
-        scrollButton.style.display = "none";
-    }
-};
+    scrollButton.style.display = 
+        (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) 
+            ? "flex" 
+            : "none";
+}, { passive: true });
 
 // Scroll to top when button is clicked
 document.getElementById("scrollToTop").onclick = function() {
@@ -4660,45 +4748,112 @@ function jumpToPage(totalPages) {
             modal.style.display = 'none';
         }
 
-        function filterRegistrations() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const mainFilter = document.getElementById('mainFilter').value;
+// Debounce function to limit how often the filter runs
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Memoization for search results
+const searchCache = new Map();
+const CACHE_MAX_SIZE = 100;
+
+// Optimized search function
+function searchRegistrations(term, data) {
+    // Check cache first
+    const cacheKey = term;
+    if (searchCache.has(cacheKey)) {
+        return searchCache.get(cacheKey);
+    }
+
+    // Convert term to lowercase once
+    const searchTerm = term.toLowerCase();
     
-    filteredRegistrations = registrationData["Form Responses 1"].filter(registration => {
-        // Search by name or email
-        const searchMatch = 
-            registration["Full Name"].toLowerCase().includes(searchTerm) ||
-            registration["Email Address"].toLowerCase().includes(searchTerm);
-
-        // Apply filters if selected
-        let filterMatch = true;
-        if (mainFilter) {
-            const subFilterValue = document.getElementById(mainFilter + 'Filter').value;
-            if (subFilterValue) {
-                switch (mainFilter) {
-                    case 'role':
-                        filterMatch = registration["Role at School "] === subFilterValue; // Note the space after "School"
-                        break;
-                    case 'district':
-                        filterMatch = registration["District of Residence"] === subFilterValue;
-                        break;
-                    case 'institution':
-                        filterMatch = registration["Level of Institution"] === subFilterValue;
-                        break;
-                }
-            }
-        }
-
-        return searchMatch && filterMatch;
+    const results = data.filter(registration => {
+        const name = registration["Full Name"].toLowerCase();
+        const email = registration["Email Address"].toLowerCase();
+        
+        // Use includes() only once per field
+        return name.includes(searchTerm) || email.includes(searchTerm);
     });
 
+    // Cache results
+    if (searchCache.size >= CACHE_MAX_SIZE) {
+        const firstKey = searchCache.keys().next().value;
+        searchCache.delete(firstKey);
+    }
+    searchCache.set(cacheKey, results);
+
+    return results;
+}
+
+// Optimized filter function
+function filterRegistrations() {
+    const searchTerm = document.getElementById('searchInput').value;
+    const mainFilter = document.getElementById('mainFilter').value;
+    
+    // First apply search
+    let results = searchTerm ? 
+        searchRegistrations(searchTerm, registrationData["Form Responses 1"]) :
+        registrationData["Form Responses 1"];
+
+    // Then apply filters if needed
+    if (mainFilter) {
+        const subFilterValue = document.getElementById(mainFilter + 'Filter').value;
+        if (subFilterValue) {
+            results = results.filter(registration => {
+                switch (mainFilter) {
+                    case 'role':
+                        return registration["Role at School "] === subFilterValue;
+                    case 'district':
+                        return registration["District of Residence"] === subFilterValue;
+                    case 'institution':
+                        return registration["Level of Institution"] === subFilterValue;
+                    default:
+                        return true;
+                }
+            });
+        }
+    }
+
+    filteredRegistrations = results;
     currentPage = 1;
     displayRegistrations(filteredRegistrations);
 }
 
-        // Event listener for search
-        document.getElementById('searchInput').addEventListener('input', filterRegistrations);
+// Debounced event listener for search
+document.getElementById('searchInput').addEventListener('input', 
+    debounce(filterRegistrations, 300)  // Wait 300ms after last keystroke
+);
 
+// Handle main filter changes
+document.getElementById('mainFilter').addEventListener('change', function(e) {
+    // Hide all sub-filters
+    document.querySelectorAll('.sub-filter').forEach(filter => {
+        filter.classList.remove('active');
+    });
+
+    // Show relevant sub-filter
+    const selectedFilter = e.target.value;
+    if (selectedFilter) {
+        const subFilter = document.getElementById(selectedFilter + 'Filter');
+        subFilter.classList.add('active');
+    }
+
+    searchCache.clear();
+    filterRegistrations();
+});
+
+// Add event listeners for sub-filters
+['role', 'district', 'institution'].forEach(filterType => {
+    document.getElementById(filterType + 'Filter').addEventListener('change', () => {
+        searchCache.clear();
+        filterRegistrations();
+    });
+});
         // Initialize
         populateDistrictFilter();
         displayRegistrations(registrationData["Form Responses 1"]);
