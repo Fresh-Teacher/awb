@@ -509,7 +509,118 @@
     </div>
 </section>
 
-    
+    <!-- YouTube Video Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Watch Our Introduction</h2>
+            <div class="divider"></div>
+            <p class="text-muted">Learn more about our program and how we can help you succeed</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="ratio ratio-16x9 shadow rounded">
+                    <!-- Replace VIDEO_ID with your actual YouTube video ID -->
+                    <iframe src="https://www.youtube.com/embed/VIDEO_ID" 
+                            title="AWB Introduction Video" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sign Up Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <h3 class="text-center mb-4">Sign Up Now</h3>
+                        <div class="divider mb-4"></div>
+                        <form id="signupForm" class="needs-validation" novalidate>
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                                <div class="invalid-feedback">
+                                    Please enter your full name
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                                <div class="invalid-feedback">
+                                    Please enter your phone number
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Country</label>
+                                <select class="form-select" id="country" required>
+                                    <option value="">Select your country</option>
+                                    <option value="UG">Uganda</option>
+                                    <option value="KE">Kenya</option>
+                                    <option value="TZ">Tanzania</option>
+                                    <option value="RW">Rwanda</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select your country
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the terms and conditions
+                                    </label>
+                                    <div class="invalid-feedback">
+                                        You must agree to the terms and conditions
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 hover-effect">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Form validation
+    (function () {
+        'use strict'
+        
+        const forms = document.querySelectorAll('.needs-validation')
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                } else {
+                    event.preventDefault()
+                    // Add your form submission logic here
+                    alert('Thank you for signing up! We will contact you soon.')
+                    form.reset()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+    </script>
 
     <section id="team" class="bg-light py-5">
         <div class="container">
@@ -769,7 +880,7 @@
     <div class="container text-center">
         <h2 class="display-4 mb-4">Start Your Journey Today</h2>
         <p class="lead mb-4">Join thousands of successful graduates and transform your future</p>
-        <a href="https://africanwebsitebuilders.com" class="btn btn-light btn-lg px-5 hover-effect">Enrol Now</a>
+        <a href="https://africanwebsitebuilders.com" class="btn btn-light btn-lg px-5 hover-effect">Enroll Now</a>
     </div>
 </section>
 
