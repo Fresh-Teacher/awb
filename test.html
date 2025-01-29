@@ -217,6 +217,26 @@
 .process-step p {
     flex-grow: 1;
 }
+/* Enhanced button hover effects */
+.hover-effect {
+    transition: all 0.3s ease;
+}
+
+.hover-effect:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* CTA button specific styles */
+.cta-section .hover-effect:hover {
+    background-color: #fff;
+    color: #0d6efd;
+}
+
+/* Pricing button specific styles */
+.pricing-card .hover-effect:hover {
+    background-color: #0b5ed7;
+}
     </style>
 </head>
 <body>
@@ -318,58 +338,60 @@
     </div>
 </section>
 
-    <section id="pricing" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>Choose Your Plan</h2>
-                <div class="divider"></div>
+   <!-- Pricing Section -->
+<section id="pricing" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Choose Your Plan</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card pricing-card shadow">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">Starter</h3>
+                        <h2 class="display-4 my-4">$15</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Website Building Basics</li>
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>4 Weeks Step-by-Step Training</li>
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Basic Support</li>
+                        </ul>
+                        <a href="https://africanwebsitebuilders.com" class="btn btn-primary mt-3 hover-effect">Get Started</a>
+                    </div>
+                </div>
             </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card pricing-card shadow">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Starter</h3>
-                            <h2 class="display-4 my-4">$15</h2>
-                            <ul class="list-unstyled">
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Website Building Basics</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>4 Weeks Step-by-Step Training</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Basic Support</li>
-                            </ul>
-                            <button class="btn btn-primary mt-3">Get Started</button>
-                        </div>
+            <div class="col-md-4">
+                <div class="card pricing-card shadow">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">Advanced</h3>
+                        <h2 class="display-4 my-4">$25</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Everything in Starter</li>
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Affiliate Marketing Training</li>
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Commission Payments Guide</li>
+                        </ul>
+                        <a href="https://africanwebsitebuilders.com" class="btn btn-primary mt-3 hover-effect">Get Started</a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card pricing-card shadow">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Advanced</h3>
-                            <h2 class="display-4 my-4">$25</h2>
-                            <ul class="list-unstyled">
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Everything in Starter</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Affiliate Marketing Training</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Commission Payments Guide</li>
-                            </ul>
-                            <button class="btn btn-primary mt-3">Get Started</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card pricing-card shadow">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Pro</h3>
-                            <h2 class="display-4 my-4">$35</h2>
-                            <ul class="list-unstyled">
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Everything in Advanced</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Rags to Riches Sales Course</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>International Client Strategy</li>
-                            </ul>
-                            <button class="btn btn-primary mt-3">Get Started</button>
-                        </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card pricing-card shadow">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">Pro</h3>
+                        <h2 class="display-4 my-4">$35</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Everything in Advanced</li>
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Rags to Riches Sales Course</li>
+                            <li class="mb-3"><i class="fas fa-check text-success me-2"></i>International Client Strategy</li>
+                        </ul>
+                        <a href="https://africanwebsitebuilders.com" class="btn btn-primary mt-3 hover-effect">Get Started</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
     
 
     <section id="team" class="bg-light py-5">
@@ -460,7 +482,7 @@
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://static.the.akdn/53832/1642347305-aku-tanzania-ied_1041.jpg" class="d-block w-100" alt="Slide 3">
+            <img src="https://images.theconversation.com/files/185657/original/file-20170912-19567-111ci4x.jpg?ixlib=rb-4.1.0&q=45&auto=format&w=926&fit=clip" class="d-block w-100" alt="Slide 3">
             <div class="carousel-caption">
                 <h1>Start Your Journey Today</h1>
                 <p>Join Thousands of Successful Graduates</p>
@@ -625,12 +647,12 @@
     </div>
 </section>
 
-<!-- Call to Action -->
+<!-- CTA Section -->
 <section class="cta-section">
     <div class="container text-center">
         <h2 class="display-4 mb-4">Start Your Journey Today</h2>
         <p class="lead mb-4">Join thousands of successful graduates and transform your future</p>
-        <button class="btn btn-light btn-lg px-5">Enroll Now</button>
+        <a href="https://africanwebsitebuilders.com" class="btn btn-light btn-lg px-5 hover-effect">Enroll Now</a>
     </div>
 </section>
 
