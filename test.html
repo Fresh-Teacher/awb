@@ -182,6 +182,41 @@
             background-color: #0d6efd;
             margin: 20px auto;
         }
+        /* Additional responsive styles */
+@media (max-width: 576px) {
+    .process-step {
+        margin-bottom: 1rem;
+    }
+    
+    .process-step h4 {
+        font-size: 1.1rem !important;
+    }
+    
+    .process-step p {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Add hover effect */
+.process-step {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.process-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Ensure consistent heights */
+.process-step {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.process-step p {
+    flex-grow: 1;
+}
     </style>
 </head>
 <body>
@@ -235,52 +270,53 @@
         </div>
     </section>
 
-    <section id="curriculum" class="bg-light py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>20-Day Money Making Course</h2>
-                <div class="divider"></div>
+<!-- Curriculum Section -->
+<section id="curriculum" class="bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>20-Day Money Making Course</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+            <div class="col">
+                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-laptop-code fa-2x"></i>
+                    </div>
+                    <h4 class="fs-5">Week 1: Beginners</h4>
+                    <p class="mb-0 small">Navigating The System with daily 35-minute video tutorials</p>
+                </div>
             </div>
-            <div class="row g-4">
-                <div class="col-md-3">
-                    <div class="process-step text-center">
-                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="fas fa-laptop-code fa-2x"></i>
-                        </div>
-                        <h4>Week 1: Beginners</h4>
-                        <p>Navigating The System with daily 35-minute video tutorials</p>
+            <div class="col">
+                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-code fa-2x"></i>
                     </div>
+                    <h4 class="fs-5">Week 2: Intermediate</h4>
+                    <p class="mb-0 small">Hands-in Practice with Zylo website building system</p>
                 </div>
-                <div class="col-md-3">
-                    <div class="process-step text-center">
-                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="fas fa-code fa-2x"></i>
-                        </div>
-                        <h4>Week 2: Intermediate</h4>
-                        <p>Hands-in Practice with Zylo website building system</p>
+            </div>
+            <div class="col">
+                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-money-bill-wave fa-2x"></i>
                     </div>
+                    <h4 class="fs-5">Week 3: Affiliate</h4>
+                    <p class="mb-0 small">Learn affiliate marketing and eCommerce strategies</p>
                 </div>
-                <div class="col-md-3">
-                    <div class="process-step text-center">
-                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="fas fa-money-bill-wave fa-2x"></i>
-                        </div>
-                        <h4>Week 3: Affiliate</h4>
-                        <p>Learn affiliate marketing and eCommerce strategies</p>
+            </div>
+            <div class="col">
+                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-chart-line fa-2x"></i>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="process-step text-center">
-                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="fas fa-chart-line fa-2x"></i>
-                        </div>
-                        <h4>Week 4: Sales</h4>
-                        <p>Master sales techniques to earn $500 per month</p>
-                    </div>
+                    <h4 class="fs-5">Week 4: Sales</h4>
+                    <p class="mb-0 small">Master sales techniques to earn $500 per month</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <section id="pricing" class="py-5">
         <div class="container">
@@ -665,9 +701,10 @@
                                 <p>Did you know? 2 out of 3 small businesses don't have a website & many others don't like the one they currently have. That's where YOU come in!</p>
                                 <p>Join AWB now and start your journey to becoming a successful website builder!</p>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Learn More</button>
-                            </div>
+                            <!-- Modal Footer with Link -->
+<div class="modal-footer">
+    <a href="https://africanwebsitebuilders.com" class="btn btn-primary" data-bs-dismiss="modal" onclick="scrollToCurriculum(event)">Learn More</a>
+</div>
                         </div>
                     </div>
                 </div>
