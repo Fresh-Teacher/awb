@@ -293,49 +293,166 @@
 <!-- Curriculum Section -->
 <section id="curriculum" class="bg-light py-5">
     <div class="container">
+        <!-- Header -->
         <div class="text-center mb-5">
-            <h2>20-Day Money Making Course</h2>
-            <div class="divider"></div>
+            <h2 class="fw-bold mb-3">20-Day Money Making Course</h2>
+            <div class="divider mx-auto"></div>
+            <p class="text-muted mt-3">Transform your skills in just 4 weeks</p>
         </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
-            <div class="col">
-                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <i class="fas fa-laptop-code fa-2x"></i>
+
+        <!-- Course Timeline -->
+        <div class="row g-4">
+            <!-- Week 1 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <!-- Icon Container -->
+                    <div class="card-body text-center d-flex flex-column align-items-center">
+                        <div class="icon-circle mb-4">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="card-title h5 mb-3">Week 1: Beginners</h3>
+                        <p class="card-text text-muted mb-0">Navigating The System with daily 35-minute video tutorials</p>
                     </div>
-                    <h4 class="fs-5">Week 1: Beginners</h4>
-                    <p class="mb-0 small">Navigating The System with daily 35-minute video tutorials</p>
+                    <!-- Progress Indicator -->
+                    <div class="card-footer bg-primary text-white text-center py-2">
+                        <small>Start Your Journey</small>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <i class="fas fa-code fa-2x"></i>
+
+            <!-- Week 2 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="card-body text-center d-flex flex-column align-items-center">
+                        <div class="icon-circle mb-4">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="card-title h5 mb-3">Week 2: Intermediate</h3>
+                        <p class="card-text text-muted mb-0">Hands-on Practice with Zylo website building system</p>
                     </div>
-                    <h4 class="fs-5">Week 2: Intermediate</h4>
-                    <p class="mb-0 small">Hands-in Practice with Zylo website building system</p>
+                    <div class="card-footer bg-primary text-white text-center py-2">
+                        <small>Build Your Skills</small>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <i class="fas fa-money-bill-wave fa-2x"></i>
+
+            <!-- Week 3 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="card-body text-center d-flex flex-column align-items-center">
+                        <div class="icon-circle mb-4">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3 class="card-title h5 mb-3">Week 3: Affiliate</h3>
+                        <p class="card-text text-muted mb-0">Learn affiliate marketing and eCommerce strategies</p>
                     </div>
-                    <h4 class="fs-5">Week 3: Affiliate</h4>
-                    <p class="mb-0 small">Learn affiliate marketing and eCommerce strategies</p>
+                    <div class="card-footer bg-primary text-white text-center py-2">
+                        <small>Grow Your Income</small>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="process-step text-center h-100 bg-white rounded shadow-sm p-4">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <i class="fas fa-chart-line fa-2x"></i>
+
+            <!-- Week 4 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="card-body text-center d-flex flex-column align-items-center">
+                        <div class="icon-circle mb-4">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="card-title h5 mb-3">Week 4: Sales</h3>
+                        <p class="card-text text-muted mb-0">Master sales techniques to earn $500 per month</p>
                     </div>
-                    <h4 class="fs-5">Week 4: Sales</h4>
-                    <p class="mb-0 small">Master sales techniques to earn $500 per month</p>
+                    <div class="card-footer bg-primary text-white text-center py-2">
+                        <small>Achieve Success</small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+        /* Icon Circle Styling */
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #0d6efd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .icon-circle i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Card Hover Effects */
+        .hover-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+
+        .hover-card:hover .icon-circle {
+            transform: scale(1.1);
+            background-color: #0b5ed7;
+        }
+
+        /* Divider Styling */
+        .divider {
+            height: 4px;
+            width: 60px;
+            background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+            border-radius: 2px;
+        }
+
+        /* Card Body Spacing */
+        .card-body {
+            padding: 2rem 1.5rem;
+        }
+
+        /* Responsive Text Adjustments */
+        @media (max-width: 768px) {
+            .card-title {
+                font-size: 1.1rem !important;
+            }
+            
+            .card-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Equal Height Cards */
+        .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body {
+            flex: 1;
+        }
+
+        /* Ensure consistent spacing on mobile */
+        @media (max-width: 576px) {
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
 </section>
 
    <!-- Pricing Section -->
@@ -652,7 +769,7 @@
     <div class="container text-center">
         <h2 class="display-4 mb-4">Start Your Journey Today</h2>
         <p class="lead mb-4">Join thousands of successful graduates and transform your future</p>
-        <a href="https://africanwebsitebuilders.com" class="btn btn-light btn-lg px-5 hover-effect">Enroll Now</a>
+        <a href="https://africanwebsitebuilders.com" class="btn btn-light btn-lg px-5 hover-effect">Enrol Now</a>
     </div>
 </section>
 
